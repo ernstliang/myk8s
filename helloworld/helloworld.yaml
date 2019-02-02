@@ -7,4 +7,5 @@ spec: # specification of the pod’s contents
   containers:
     - name: hello
       image: "ubuntu:14.04"
-      command: ["/bin/echo","hello","world"]
+      command: ["/bin/echo"]
+      args: ["hello", "my world"]
