@@ -9,7 +9,7 @@ FLANNEL_TGZ=flannel-v0.10.0-linux-amd64.tar.gz
 --key-file=/k8s/etcd/ssl/server-key.pem \
 --endpoints="https://172.16.31.12:2379,\
 https://172.16.35.10:2379,https://172.16.35.11:2379" \
-set /coreos.com/network/config  '{ "Network": "172.18.0.0/16", "Backend": {"Type": "vxlan"}}'
+set /coreos.com/network/config  '{ "Network": "10.24.0.0/16", "Backend": {"Type": "vxlan"}}'
 
 # 解压flannel并安装
 if [ ! -e "$FLANNEL_TGZ" ];then

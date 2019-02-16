@@ -1,5 +1,5 @@
 #!/bin/bash
-# 安装k8s
+# 配置etcd和k8s的ca证书
 
 CUR=`pwd`
 echo "CUR=$CUR"

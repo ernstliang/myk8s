@@ -850,6 +850,11 @@ kubectl get csr
 kubectl certificate approve node-csr-_ZX6yd5GQzdajU4ni2ChEGveadAUpV-X5bgGLiu82Iw
 ```
 
+自动审批方式：<br>
+参考:<br>
+1. [https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/#approval-controller](https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-tls-bootstrapping/#approval-controller)<br>
+2. [https://www.sadlar.cn/2018/05/25/kubetnetes-自动签署新node节点的csr请求以及后续的续期](https://www.sadlar.cn/2018/05/25/kubetnetes-%E8%87%AA%E5%8A%A8%E7%AD%BE%E7%BD%B2%E6%96%B0node%E8%8A%82%E7%82%B9%E7%9A%84csr%E8%AF%B7%E6%B1%82%E4%BB%A5%E5%8F%8A%E5%90%8E%E7%BB%AD%E7%9A%84%E7%BB%AD%E6%9C%9F/)
+
 #### 配置kube-proxy
 kube-proxy 运行在所有 node节点上，它监听 apiserver 中 service 和 Endpoint 的变化情况，创建路由规则来进行服务负载均衡<br>
 
@@ -904,4 +909,10 @@ NAME           STATUS   ROLES    AGE     VERSION
 ```
 kubectl label node 172.16.35.12  node-role.kubernetes.io/master='master'
 kubectl label node 172.16.35.10  node-role.kubernetes.io/node='node'
+```
+
+删除node的标签
+
+```
+kubectl label node 172.16.35.12 node-role.kubernetes.io/node-
 ```
