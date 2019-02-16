@@ -20,6 +20,7 @@
 ## 5.搭建etcd集群
 1. 部署master节点etcd_deployment.sh
 2. master上配置node节点的etcd环境etcd_dispatch.sh
+3. etcd需要同时启动两台才能成功
 
 ## 6.部署flannel
 1. 修改docker.service启动参数配置指定子网络网段
