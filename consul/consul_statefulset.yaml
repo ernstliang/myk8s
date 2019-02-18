@@ -69,10 +69,10 @@ spec:
               name: consuldns
             - containerPort: 8300
               name: server
-      volumes:
-        - name: config
-          configMap:
-            name: consul
+      # volumes:
+      #   - name: config
+      #     configMap:
+      #       name: consul
   volumeClaimTemplates:
     - metadata:
         name: data
