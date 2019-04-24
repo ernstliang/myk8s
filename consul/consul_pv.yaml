@@ -1,19 +1,4 @@
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  finalizers:
-  - kubernetes.io/pvc-protection
-  name: data-consul-0
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteOnce
-  storageClassName: manual
-  resources:
-    requests:
-      storage: 10Gi
----
-apiVersion: v1
 kind: PersistentVolume
 metadata:
   namespace: default
@@ -32,21 +17,6 @@ spec:
     path: /Users/xliang/Documents/workspace/data/k8s_consul_0
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  finalizers:
-  - kubernetes.io/pvc-protection
-  name: data-consul-1
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteOnce
-  storageClassName: manual
-  resources:
-    requests:
-      storage: 10Gi
----
-apiVersion: v1
 kind: PersistentVolume
 metadata:
   namespace: default
@@ -63,21 +33,6 @@ spec:
   storageClassName: manual
   hostPath:
     path: /Users/xliang/Documents/workspace/data/k8s_consul_1
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  finalizers:
-  - kubernetes.io/pvc-protection
-  name: data-consul-2
-  namespace: default
-spec:
-  accessModes:
-  - ReadWriteOnce
-  storageClassName: manual
-  resources:
-    requests:
-      storage: 10Gi
 ---
 apiVersion: v1
 kind: PersistentVolume
