@@ -1,29 +1,32 @@
-apiVersion: apps/v1beta1 
+apiVersion: apps/v1 
 kind: StatefulSet
 metadata:
   name: consul
 spec:
   serviceName: consul
   replicas: 3
+  selector:
+    matchLabels:
+      app: consul
   template: 
     metadata:
       labels:
         app: consul
     spec:
-      # affinity:
-      #   podAntiAffinity:
-      #     requiredDuringSchedulingIgnoredDuringExecution:
-      #       - labelSelector:
-      #           matchExpressions:
-      #             - key: app
-      #               operator: In
-      #               values:
-      #                 - consul
-      #         topologyKey: kubernetes.io/hostname
-      terminationGracePeriodSeconds: 10
+      #affinity:
+      #  podAntiAffinity:
+      #    requiredDuringSchedulingIgnoredDuringExecution:
+      #      - labelSelector:
+      #          matchExpressions:
+      #            - key: app
+      #              operator: In
+      #              values:
+      #                - consul
+      #        topologyKey: kubernetes.io/hostname
+      #rminationGracePeriodSeconds: 10
       containers:
       - name: consul
-        image: consul:latest
+        image: consul:1.5.0
         args:
             - "agent"
             - "-server"
@@ -79,6 +82,7 @@ spec:
       spec:
         accessModes:
           - ReadWriteOnce
+        storageClassName: manual
         resources:
           requests:
-            storage: 10Gi
+            storage: 1Gi
