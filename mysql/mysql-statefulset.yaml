@@ -163,7 +163,7 @@ spec:
           name: mysql
   volumeClaimTemplates:
     - metadata:
-      name: data
+        name: data
       spec:
         accessModes: ["ReadWriteOnce"]
         storageClassName: mysql-storage
