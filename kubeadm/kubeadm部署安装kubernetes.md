@@ -1,7 +1,8 @@
 # kubeadm部署安装kubernetes
 
 集群环境准备<br>
-集群多样，简单使用vagrant创建虚拟机集群用于验证，vagrant集群搭建参考`../vagrant`
+集群多样，简单使用vagrant创建虚拟机集群用于验证，但需要机器内存足够，vagrant集群搭建参考`../vagrant`<br>
+或者局域网内配置几台centos机器，下面步骤都是基于centos环境上配置的
 
 ## 1.安装docker
 使用shell目录下的`install_docker.sh`脚本一键安装docker
