@@ -19,11 +19,11 @@
 - 设置`net.bridge.bridge-nf-call-iptables`为1，
 
 ```
-	cat <<EOF >  /etc/sysctl.d/k8s.conf
-	net.bridge.bridge-nf-call-ip6tables = 1
-	net.bridge.bridge-nf-call-iptables = 1
-	EOF
-	sysctl --system
+cat <<EOF >  /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sysctl --system
 ```
 
 - 确认`br_netfilter`是否已开启
@@ -134,7 +134,7 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-kubeadm join 192.168.0.100：6444 --token xxx --discovery-token-ca-cert-hash xxx
+kubeadm join 192.168.0.100:6444 --token xxx --discovery-token-ca-cert-hash xxx
 ```
 
 注：这里拷贝admin.conf命令需要执行，不然`kubectl`指令调用会提示错误
