@@ -87,7 +87,7 @@ $ ./pull_k8s_1.14.1.sh
 
 #### hostname设置
 
-hostname设置不规范`kubeadm init`时可能会报错
+hostname设置不规范`kubeadm init`时可能会报错，不能使用'_'
 
 ```
 name: Invalid value: "k8s_master": a DNS-1123 subdomain must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character (e.g. 'example.com', regex used for
@@ -153,8 +153,8 @@ Unable to connect to the server: x509: certificate signed by unknown authority (
 # kubectl get pods -n kube-system
 
 NAME                           READY   STATUS             RESTARTS   AGE
-coredns-fb8b8dccf-kck2j        0/1     Pending   584        2d1h
-coredns-fb8b8dccf-lzn84        0/1     Pending   583        2d1h
+coredns-fb8b8dccf-kck2j        0/1     Pending            0          2d1h
+coredns-fb8b8dccf-lzn84        0/1     Pending            0          2d1h
 etcd-nuc7                      1/1     Running            0          2d9h
 kube-apiserver-nuc7            1/1     Running            0          2d9h
 kube-controller-manager-nuc7   1/1     Running            1          2d9h
@@ -187,7 +187,7 @@ coredns-fb8b8dccf-lzn84        0/1     CrashLoopBackOff   5        2d2h
 # kubectl -n kube-system logs coredns-fb8b8dccf-kck2j
 ```
 
-例 错误信息如下:
+例如错误信息如下:
 
 ```
 k8s.io/dns/pkg/dns/dns.go:150: Failed to list *v1.Service: Get https://10.96.0.1:443/api/v1/services?resourceVersion=0: dial tcp 10.96.0.1:443: getsockopt: no route to host
@@ -204,6 +204,18 @@ k8s.io/dns/pkg/dns/dns.go:150: Failed to list *v1.Service: Get https://10.96.0.1
  # iptables -t nat --flush
  # systemctl start kubelet
  # systemctl start docker
+```
+
+通过Taint/Toleration调整master执行Pod的策略
+
+默认情况下master是不允许运行用户pod的，而kubernetes做到这一点，依靠的是kubernetes的Taint/Toleration机制。
+
+Taint/Toleration原理:一旦某个节点被加上了一个Taint，即被“打上了污点”，那么所有Pod就都不能在这个节点上运行，除非，有个别Pod声明自己能“容忍”这个“污点”，即声明Toleration，它才可以再这个节点上运行。
+
+如果想要一个单节点的kubernetes，就需要删除master的这个Taint
+
+```
+$ kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
 ### 4.2 新节点加入集群
