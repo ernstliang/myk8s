@@ -43,7 +43,7 @@ spec:
           mountPath: /mnt/config-map
       # clone mysql    
       - name: clone-mysql
-        image: ipunktbs/xtrabackup:1.2.0
+        image: ist0ne/xtrabackup:1.0
         command:
         - bash
         - "-c"
@@ -90,7 +90,13 @@ spec:
             memory: 1Gi
         livenessProbe:
           exec:
-              command: ["mysqladmin", "-uroot", "-p$MYSQL_ROOT_PASSWORD", "ping"]
+            command:
+            - bash
+            - "-c"
+            - |
+              set -ex
+              mysqladmin -uroot -p$MYSQL_ROOT_PASSWORD ping &> /dev/null
+            # command: ["mysqladmin", "-uroot", "-p${MYSQL_ROOT_PASSWORD}", "ping"]
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
@@ -107,12 +113,12 @@ spec:
           timeoutSeconds: 1
       # template.spec.containers
       - name: xtrabackup
-        image: ipunktbs/xtrabackup:1.2.0
+        image: ist0ne/xtrabackup:1.0
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mysql-pass-root
+              name: mysql-secret
               key: password
         ports:
         - name: xtrabackup
@@ -150,13 +156,13 @@ spec:
             mv change_master_to.sql.in change_master_to.sql.orig
             # 使用 change_master_to.sql.orig 的内容，也是就是前面拼装的 SQL，组成一个完整的初始化和启动 Slave 的 SQL 语句
             mysql -h 127.0.0.1 -uroot -p$MYSQL_ROOT_PASSWORD <<EOF
-            $(<change_master_to.sql.orig),
-              MASTER_HOST='mysql-0.mysql',
-              MASTER_USER='root',
-              MASTER_PASSWORD='$MYSQL_ROOT_PASSWORD',
-              MASTER_CONNECT_RETRY=10;
-            START SLAVE;
-            EOF
+          $(<change_master_to.sql.orig),
+            MASTER_HOST='mysql-0.mysql',
+            MASTER_USER='root',
+            MASTER_PASSWORD='$MYSQL_ROOT_PASSWORD',
+            MASTER_CONNECT_RETRY=10;
+          START SLAVE;
+          EOF
           fi
           
           # 使用 ncat 监听 3307 端口。它的作用是，在收到传输请求的时候，直接执行 "xtrabackup --backup" 命令，备份 MySQL 的数据并发送给请求者
@@ -179,7 +185,7 @@ spec:
         name: data
       spec:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: mysql-storage
+        storageClassName: local-storage
         resources:
           requests:
-            storage: 10Gi
+            storage: 5Gi
