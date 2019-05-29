@@ -127,6 +127,38 @@ mysql> show databases;
 
 `my_test_db`数据库已经在mysql-1中创建，主从同步验证完成。
 
+扩展从服务器，将mysql从数据库从2台扩展到3台
+
+```
+$ kubectl scale statefulset mysql --replicas=4
+statefulset.apps/mysql scaled
+
+$ kubectl get pods
+NAME      READY   STATUS     RESTARTS   AGE
+mysql-0   2/2     Running    0          3h35m
+mysql-1   2/2     Running    0          3h33m
+mysql-2   2/2     Running    0          3h21m
+mysql-3   0/2     Init:1/2   0          5s
+
+$ kubectl exec -it mysql-3 -- bash
+root@mysql-3:/# mysql -uroot -p
+Enter password:
+mysql> show databases;
++------------------------+
+| Database               |
++------------------------+
+| information_schema     |
+| my_test_db             |
+| mysql                  |
+| performance_schema     |
+| sys                    |
+| xtrabackup_backupfiles |
++------------------------+
+6 rows in set (0.01 sec)
+```
+
+
+
 ## 参考资料
 
 - [极客时间-深入剖析Kubernetes](https://time.geekbang.org/column/article/41217)
