@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-configmap-volume
+spec:
+  containers:
+    - name: container-configmap-volume
+      image: busybox
+      command: [ "/bin/sh", "-c", "cat /etc/config/proper" ]
+      volumeMounts:
+      - name: test-configmap-volume
+        mountPath: /etc/config
+  volumes:
+    - name: test-configmap-volume
+      configMap:
+        name: xb-config
+        items:
+          - key: xb.properties
+            path: proper
+  restartPolicy: Never

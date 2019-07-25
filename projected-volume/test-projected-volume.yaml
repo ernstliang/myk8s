@@ -18,7 +18,4 @@ spec:
     projected:
       sources:
       - secret:
-          name: user
-      - secret:
-          name: pass
-
+          name: my-secret

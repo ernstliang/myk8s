@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-test-configmap
+spec:
+  restartPolicy: Never
+  containers:
+    - name: container-test-configmap
+      image: busybox
+      command: [ "/bin/sh", "-c", "env" ]
+      env:
+        - name: XB_PROPERTIES
+          valueFrom:
+            configMapKeyRef:
+              name: xb-config
+              key: xb.properties
