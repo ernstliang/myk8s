@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostaliases
+  labels:
+    app: hostAliases
+    role: frontend
+spec:
+  hostAliases:
+    - ip: "10.1.1.12"
+      hostnames:
+      - "yt.remote"
+      - "hz.molo.com"
+  nodeSelector:
+    disktype: ssd
+  containers:
+    - name: website
+      image: nginx:1.7.9
+      ports:
+        - containerPort: 80

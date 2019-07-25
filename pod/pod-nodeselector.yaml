@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: website
+  labels:
+    app: website
+    role: frontend
+spec:
+  nodeSelector:
+    disktype: ssd
+  containers:
+    - name: website
+      image: nginx:1.7.9
+      ports:
+        - containerPort: 80
