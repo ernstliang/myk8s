@@ -17,7 +17,8 @@
 ### 2.1 前置条件设置
 
 - 把SELinux设置成permissive，setenforce 0或者修改`/etc/selinux/config`文件永久生效
-- 设置`net.bridge.bridge-nf-call-iptables`为1，
+- 设置`net.bridge.bridge-nf-call-iptables`为1
+- 关闭sweap
 
 ```
 cat <<EOF >  /etc/sysctl.d/k8s.conf
@@ -229,13 +230,22 @@ $ kubectl taint nodes --all node-role.kubernetes.io/master-
 这就是前面`kubeadm init`步骤成功后输出的加入集群的命令，若执行后无响应切无日志输出，可以设置日志等级`-v 3`查看
 
 #### 错误处理
-错误1：
+
+错误1:
+
+```
+Failed to request cluster info, will try again: [Get https://192.168.0.100:6443/api/v1/namespaces/kube-public/configmaps/cluster-info: dial tcp 192.168.0.100:6443: getsockopt: no route to host
+```
+
+错误原因: master节点开着防火墙
+
+错误2：
 
 ```
 I0524 21:05:58.645342    6831 token.go:147] [discovery] Failed to request cluster info, will try again: [Get https://192.168.0.100:6443/api/v1/namespaces/kube-public/configmaps/cluster-info: x509: certificate has expired or is not yet valid]
 ```
 
-错误原因：新节点无法根据输入的ca信息无法调通master的apiserver，可能是输入的授权hash错误，也可能是kubeadm本身的bug，遇到过几次，一开始加入不行，等几个小时候再试就加入成功了。。。
+错误原因：新节点无法根据输入的ca信息无法调通master的apiserver，master和node节点时间不同步，可以安装ntp同步时间
 
 检查：
 检查token是否过期
@@ -262,11 +272,11 @@ $ openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outf
 
 比较生成的hash值和join命令中输入的hash值是否一致
 
-错误2：
+错误3：
 
 前置检测报cri错误无法连接`unix:///var/run/docker.sock`，这是docker启动失败了，检测docker相关配置文件是否正确，`/etc/docker/daemon.json`, `/etc/containerd/config.toml`
 
-错误3：
+错误4：
 
 ```
 error execution phase preflight: [preflight] Some fatal errors occurred:
