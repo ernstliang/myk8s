@@ -165,13 +165,32 @@ kube-scheduler-nuc7            1/1     Running            1          2d9h
 
 这是因为网络插件还未安装，coredns一直处于pending状态
 
-安装网络插件
+安装网络插件flannel
 
 ```
 # kubectl apply -f yaml/kube-flannel.yml
 ```
 
 安装完网络插件后，coredns就会进入调度状态，这里选用flannel作为网络插件，当然也可以选用calico,weave等插件
+
+安装calico网络插件
+
+[calico官网](https://docs.projectcalico.org/v3.8/getting-started/kubernetes/)
+
+```
+下载calico yaml文件
+# wget https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+
+修改calico yaml文件中的pod子网段
+- name: CALICO_IPV4POOL_CIDR
+  value: "192.168.0.0/16"
+To kubeadm初始化master时指定的子网段
+- name: CALICO_IPV4POOL_CIDR
+  value: "10.244.0.0/16"
+
+安装calico网络插件
+# kubectl apply -f calico.yaml
+```
 
 如果调度完成后coredns一直处于`CrashLoopBackOff`状态
 
