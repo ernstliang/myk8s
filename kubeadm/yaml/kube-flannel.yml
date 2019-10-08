@@ -125,8 +125,9 @@ data:
   net-conf.json: |
     {
       "Network": "10.244.0.0/16",
+      "SubnetLen": 24,
       "Backend": {
-        "Type": "vxlan"
+        "Type": "host-gw"
       }
     }
 ---

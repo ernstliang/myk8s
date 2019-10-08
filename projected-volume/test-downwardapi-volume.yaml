@@ -33,4 +33,10 @@ spec:
               - path: "ns"
                 fieldRef:
                   fieldPath: metadata.namespace
+              - path: "account"
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+              - path: "podip"
+                fieldRef:
+                  fieldPath: status.podIP
 
