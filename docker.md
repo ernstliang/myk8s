@@ -11,8 +11,8 @@
 
 Linux下的docker容器，使用Namespace技术修改进程视图，使用Cgroups技术制造约束条件。
 
-- Namespace是Linux内核用来隔离内核资源的方式。通过Namespace可以让一些进程只能看到与自己像个的一部分资源，而另外一些进程只能看到与它们自己相关的资源，两拨进程根本就感觉不到对方的存在。
-- Cgroups是Control Group的缩写，是Linux内核提供的一种可以限制、记录、隔离进程组(process group)、所使用的物力资源(如cpu memory i/o等)的机制。
+- Namespace是Linux内核用来隔离内核资源的方式。通过Namespace可以让一些进程只能看到与自己相关的一部分资源，而另外一些进程只能看到与它们自己相关的资源，两拨进程根本就感觉不到对方的存在。
+- Cgroups是Control Group的缩写，是Linux内核提供的一种可以限制、记录、隔离进程组(process group)、所使用的物理资源(如cpu memory i/o等)的机制。
 
 下面通过一个简单的例子来分析
 
