@@ -11,6 +11,13 @@
 # ./install_docker.sh
 ```
 
+检查ip_forward设置
+
+```
+# sysctl net.ipv4.ip_forward
+net.ipv4.ip_forward = 1
+```
+
 ## 2.安装kubeadm
 [官网链接](https://kubernetes.io/zh/docs/setup/independent/install-kubeadm/)
 
@@ -63,6 +70,14 @@ EOF
 
 ```
 yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes
+
+kubeadm和kubernetes的版本相关，需要根据kubernetes的版本选用kubeadm版本
+指定安装 1.14.1-0
+显示所有kubectl的版本
+yum list kubectl —showduplicates
+yum install kubectl-1.14.1-0
+yum install kubelet-1.14.1-0
+yum install kubeadm-1.14.1-0
 ```
 
 3. 开机自启kubelet
@@ -93,6 +108,14 @@ hostname设置不规范`kubeadm init`时可能会报错，不能使用'_'
 ```
 name: Invalid value: "k8s_master": a DNS-1123 subdomain must consist of lower case alphanumeric characters, '-' or '.', and must start and end with an alphanumeric character (e.g. 'example.com', regex used for
  validation is '[a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*')
+```
+
+设置hostname
+
+```
+# hostnamectl set-hostname <newhostname>
+
+修改/etc/hosts修改主机名为 <newhostname>
 ```
 
 
