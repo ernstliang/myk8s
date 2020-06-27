@@ -33,4 +33,7 @@
 - 验证安装
   - `$ istioctl verify-install -f ${HOME}/generated-manifest.yaml`
   - 官方dashboard查看 `istioctl dashboard kiali`
+-  注入Sidecar
+  - 自动：`$ kubectl label namespace default istio-injection=enabled`
+  - 手动：`$ kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)`
 
