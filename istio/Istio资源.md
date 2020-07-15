@@ -141,12 +141,20 @@ kubectl get configmap istio -n istio-system -o yaml | sed 's/mode: ALLOW_ANY/mod
 kubectl apply -f samples/sleep/sleep.yaml
 # 测试请求
 kubectl exec -it sleep-666475687f-sm8zg -c sleep curl http://httpbin.org/ip
-error code: 1020
+{
+  "origin": "xxx.xxx.xxx.xxx"
+}
 # 关闭出流量访问
 kubectl get configmap istio -n istio-system -o yaml | sed 's/mode: ALLOW_ANY/mode: REGISTRY_ONLY/g' | kubectl replace -n istio-system -f -
 # 再次测试请求
 kubectl exec -it sleep-666475687f-sm8zg -c sleep curl http://httpbin.org/ip
 无返回
 # 注册
+kubectl apply -f httpbin-se.yaml
+# 再次请求
+ kubectl exec -it sleep-666475687f-sm8zg -c sleep curl http://httpbin.org/ip
+{
+  "origin": "xxx.xxx.xxx.xxx"
+}
 ```
 
