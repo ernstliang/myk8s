@@ -314,6 +314,14 @@ $ openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outf
 
 比较生成的hash值和join命令中输入的hash值是否一致
 
+```
+kubeadm join 192.168.5.100:6443 --token 6japvh.1zn6j06ztr0oj146 --discovery-token-ca-cert-hash e32b8c6ade80b75b59a4d45735ab6790633700a8d9052c51fc72e13c206a48c5
+[preflight] Running pre-flight checks
+error execution phase preflight: couldn't validate the identity of the API Server: invalid public key hash, expected "format:value"
+```
+
+discovery-hash格式错误: => sha256:e32b8c6ade80b75b59a4d45735ab6790633700a8d9052c51fc72e13c206a48c5
+
 错误3：
 
 前置检测报cri错误无法连接`unix:///var/run/docker.sock`，这是docker启动失败了，检测docker相关配置文件是否正确，`/etc/docker/daemon.json`, `/etc/containerd/config.toml`
